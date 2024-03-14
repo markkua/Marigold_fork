@@ -174,6 +174,16 @@ python run.py \
     --output_dir output/in-the-wild_example
 ```
 
+### Up-to-scale
+
+```bash
+python run.py \
+    --checkpoint Bingxin/marigold_up2scale_alpha0.1 \
+    --up2scale \
+    --input_rgb_dir input/in-the-wild_example \
+    --output_dir output/in-the-wild_example
+```
+
 ## ✏️ Contributing
 
 Please refer to [this](CONTRIBUTING.md) instruction.

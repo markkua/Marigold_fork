@@ -120,6 +120,11 @@ if "__main__" == __name__:
         action="store_true",
         help="Flag of running on Apple Silicon.",
     )
+    parser.add_argument(
+        "--up2scale",
+        action="store_true",
+        help="Flag of up-to-scale version.",
+    )
 
     args = parser.parse_args()
 
@@ -143,6 +148,8 @@ if "__main__" == __name__:
     apple_silicon = args.apple_silicon
     if apple_silicon and 0 == batch_size:
         batch_size = 1  # set default batchsize
+
+    up2scale = args.up2scale
 
     # -------------------- Preparation --------------------
     # Random seed
@@ -224,7 +231,8 @@ if "__main__" == __name__:
                 batch_size=batch_size,
                 color_map=color_map,
                 show_progress_bar=True,
-                resample_method=resample_method
+                resample_method=resample_method,
+                up2scale=up2scale,
             )
 
             depth_pred: np.ndarray = pipe_out.depth_np

@@ -43,7 +43,7 @@ from .util.image_util import (
     get_pil_resample_method,
 )
 from .util.batchsize import find_batch_size
-from .util.ensemble import ensemble_depths
+from .util.ensemble import ensemble_depths, ensemble_depths_up2scale
 
 
 class MarigoldDepthOutput(BaseOutput):
@@ -124,6 +124,7 @@ class MarigoldPipeline(DiffusionPipeline):
         color_map: str = "Spectral",
         show_progress_bar: bool = True,
         ensemble_kwargs: Dict = None,
+        up2scale: bool = False,
     ) -> MarigoldDepthOutput:
         """
         Function invoked when calling the pipeline.
@@ -230,9 +231,14 @@ class MarigoldPipeline(DiffusionPipeline):
 
         # ----------------- Test-time ensembling -----------------
         if ensemble_size > 1:
-            depth_pred, pred_uncert = ensemble_depths(
-                depth_preds, **(ensemble_kwargs or {})
-            )
+            if up2scale:
+                depth_pred, pred_uncert = ensemble_depths_up2scale(
+                    depth_preds, **(ensemble_kwargs or {})
+                )
+            else:
+                depth_pred, pred_uncert = ensemble_depths(
+                    depth_preds, **(ensemble_kwargs or {})
+                )
         else:
             depth_pred = depth_preds
             pred_uncert = None
